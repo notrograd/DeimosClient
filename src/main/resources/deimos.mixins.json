@@ -1,0 +1,18 @@
+{
+  "required": true,
+  "minVersion": "0.8",
+  "package": "net.deimos.mixin",
+  "compatibilityLevel": "JAVA_21",
+  "mixins": [
+    "MixinClientConnection",
+    "MixinEntity",
+    "accessor.AccessorPlayerMoveC2SPacket"
+  ],
+  "client": [
+    "MixinChat",
+    "MixinClientPlayerEntity"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}

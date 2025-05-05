@@ -1,0 +1,24 @@
+{
+  "schemaVersion": 1,
+  "id": "deimos",
+  "version": "${version}",
+  "name": "deimosclient",
+  "description": "Halal Minecraft Client.",
+  "authors": ["notrograd"],
+  "contact": {},
+  "license": "All-Rights-Reserved",
+  "environment": "client",
+  "entrypoints": {
+    "main": [
+      "net.deimos.Deimos"
+    ]
+  },
+  "mixins": [
+    "deimos.mixins.json"
+  ],
+  "depends": {
+    "fabricloader": ">=${loader_version}",
+    "fabric": "*",
+    "minecraft": "${minecraft_version}"
+  }
+}
