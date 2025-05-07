@@ -1,4 +1,4 @@
-package net.deimos.api;
+package net.deimos.api.gui;
 
 import java.awt.*;
 

@@ -1,8 +1,8 @@
 package net.deimos.api.gui.settings;
 
 import net.deimos.api.settings.Setting;
-import net.deimos.api.i.IClient;
-import net.deimos.api.i.IVisible;
+import net.deimos.api.interfaces.IClient;
+import net.deimos.api.interfaces.IVisible;
 import net.minecraft.client.gui.DrawContext;
 
 import java.awt.*;
@@ -63,7 +63,7 @@ public class BoolSetting extends Setting<Boolean> implements IClient {
     public void render(DrawContext context, float mouseX, float mouseY, int x, int y, int width, int height) {
         hovered = mouseX >= x && mouseX <= x + width && mouseY >= y && mouseY <= y + height;
 
-        int backgroundColor = getValue() ? new Color(232, 12, 12, hovered ? 150 : 100).getRGB()
+        int backgroundColor = getValue() ? new Color(232, 12, 12, hovered ? 200: 150).getRGB()
                 : new Color(147, 27, 27, hovered ? 180 : 140).getRGB();
 
         context.fill(x, y, x + width, y + height, backgroundColor);

@@ -1,11 +1,12 @@
 package net.deimos.mods.movement;
+
 import net.deimos.api.event.impl.TickEvent;
 import net.deimos.api.gui.settings.BoolSetting;
 import net.deimos.api.gui.settings.SliderSetting;
 import net.deimos.api.mods.ModuleBuilder;
 import net.deimos.api.util.MovementUtil;
-import net.deimos.api.i.EventHandler;
-import net.deimos.api.i.Module;
+import net.deimos.api.interfaces.EventHandler;
+import net.deimos.api.interfaces.Module;
 import net.deimos.api.mods.Category;
 
 @Module(
@@ -36,34 +37,36 @@ public class Speed extends ModuleBuilder {
 
         if (MovementUtil.isMoving())
         {
-            if (client.player.isOnGround())
-            {
-                client.options.jumpKey.setPressed(true);
+            if (!MovementUtil.isMoving() && strafe.getValue()) {
+                client.options.jumpKey.setPressed(false);
             }
+
+            client.options.jumpKey.setPressed(client.player.isOnGround() && strafe.getValue());
+
 
             if (MovementUtil.forwardPressed())
             {
-                MovementUtil.moveForward((float) (speed.value - 0.8));
+                MovementUtil.moveForward((float) (speed.value - 0.7));
             }
             if (MovementUtil.backPressed())
             {
-                MovementUtil.moveBackward((float) (speed.value - 0.8));
+                MovementUtil.moveBackward((float) (speed.value - 0.7));
             }
             if (MovementUtil.leftPressed())
             {
-                MovementUtil.strafeLeft((float) (speed.value - 0.8));
+                MovementUtil.strafeLeft((float) (speed.value - 0.7));
             }
             if(MovementUtil.rightPressed())
             {
-                MovementUtil.strafeRight((float) (speed.value - 0.8));
+                MovementUtil.strafeRight((float) (speed.value - 0.7));
             }
             if(MovementUtil.forwardPressed() && MovementUtil.rightPressed())
             {
-                MovementUtil.moveForwardRight((float) (speed.value - 0.8));
+                MovementUtil.moveForwardRight((float) (speed.value - 0.7));
             }
             if(MovementUtil.forwardPressed() && MovementUtil.leftPressed())
             {
-                MovementUtil.moveForwardLeft((float) (speed.value - 0.8));
+                MovementUtil.moveForwardLeft((float) (speed.value - 0.7));
             }
         }
     }

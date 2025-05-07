@@ -1,4 +1,4 @@
-package net.deimos.api.i;
+package net.deimos.api.interfaces;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;

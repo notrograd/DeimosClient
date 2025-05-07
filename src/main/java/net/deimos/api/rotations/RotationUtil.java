@@ -1,6 +1,6 @@
 package net.deimos.api.rotations;
 
-import net.deimos.api.i.IClient;
+import net.deimos.api.interfaces.IClient;
 import net.minecraft.network.packet.c2s.play.PlayerMoveC2SPacket;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;

@@ -1,18 +1,19 @@
 package net.deimos.mods.pvp;
 
+import net.deimos.api.event.EventManager;
 import net.deimos.api.event.impl.TickEvent;
 import net.deimos.api.gui.settings.BoolSetting;
 import net.deimos.api.gui.settings.SliderSetting;
 import net.deimos.api.mods.ModuleBuilder;
-import net.deimos.api.util.TickDelayHandler;
-import net.deimos.api.i.EventHandler;
-import net.deimos.api.i.Module;
+import net.deimos.api.interfaces.EventHandler;
+import net.deimos.api.interfaces.Module;
 import net.deimos.api.mods.Category;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.mob.HostileEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Items;
+import net.minecraft.util.Hand;
 
 @Module(
         name = "KillAura",
@@ -59,6 +60,9 @@ public class KillAura extends ModuleBuilder {
             .setDescription("grim anticheat")
             .build();
 
+    private int tickCounter = 0;
+    private static final int ATTACK_DELAY = 25;
+
     public KillAura() {
         addSetting(weaponOnly);
         addSetting(radius);
@@ -67,73 +71,104 @@ public class KillAura extends ModuleBuilder {
         addSetting(misc);
         addSetting(rotate);
         addSetting(grim);
+
+        EventManager.register(this);
     }
 
     @EventHandler
-    public void onTick(TickEvent.Post event) {
-        if (!this.enabled || client.player == null || client.world == null) return;
-
-        if (weaponOnly.value && !isHoldingSword()) return;
-
-        Entity target = getNearestEntity();
-        if (!(target instanceof LivingEntity)) return;
-
-        if (rotate.value) {
-            if (grim.value) {
-                this.RotationManager.grim(target.getPos());
-            } else {
-                this.RotationManager.ncp(target.getPos());
-            }
+    public void tick(TickEvent.Post event) {
+        if (!getEnabled() || client.player == null || client.world == null) {
+            return;
         }
 
+        if (weaponOnly.getValue() && !isWeapon()) {
+            return;
+        }
 
-        TickDelayHandler.runAfterTicks(() -> {
+        tickCounter++;
+        if (tickCounter < ATTACK_DELAY) {
+            return;
+        }
+        tickCounter = 0;
 
-            client.player.swingHand(client.player.getActiveHand());
-            assert client.interactionManager != null;
-            client.interactionManager.attackEntity(client.player, target);
+        LivingEntity target = findTarget();
+        if (target == null) {
+            return;
+        }
 
-        }, 25);
+        if (rotate.getValue()) {
+            rotateToTarget(target);
+        }
+
+        attackTarget(target);
     }
-    private Entity getNearestEntity() {
-        Entity nearest = null;
-        double closest = radius.value;
 
-        assert client.world != null;
+    private void rotateToTarget(Entity target) {
+        if (grim.getValue()) {
+            RotationManager.grim(target.getPos());
+        } else {
+            RotationManager.ncp(target.getPos());
+        }
+    }
+
+    private void attackTarget(Entity target) {
+        if (client.player == null || client.interactionManager == null) {
+            return;
+        }
+
+        client.player.swingHand(Hand.MAIN_HAND);
+        client.interactionManager.attackEntity(client.player, target);
+    }
+
+    private LivingEntity findTarget() {
+        if (client.world == null || client.player == null) {
+            return null;
+        }
+
+        LivingEntity bestTarget = null;
+        double closestDistance = radius.getValue();
+
         for (Entity entity : client.world.getEntities()) {
-            if (!(entity instanceof LivingEntity) || entity == client.player) continue;
+            if (!(entity instanceof LivingEntity) || entity == client.player) {
+                continue;
+            }
 
-            if (!isValidTarget(entity)) continue;
+            LivingEntity livingEntity = (LivingEntity) entity;
 
-            double dist = entity.distanceTo(client.player);
-            if (dist < closest) {
-                closest = dist;
-                nearest = entity;
+            if (!isValidTarget(livingEntity)) {
+                continue;
+            }
+
+            double distance = client.player.distanceTo(livingEntity);
+            if (distance < closestDistance) {
+                closestDistance = distance;
+                bestTarget = livingEntity;
             }
         }
 
-        return nearest;
+        return bestTarget;
     }
 
     private boolean isValidTarget(Entity entity) {
-        if (entity instanceof PlayerEntity && players.value) {
-            return entity != client.player && !((PlayerEntity) entity).isCreative();
+        if (entity instanceof PlayerEntity) {
+            PlayerEntity player = (PlayerEntity) entity;
+            return players.getValue() && !player.isCreative() && player != client.player;
+        } else if (entity instanceof HostileEntity) {
+            return hostiles.getValue();
+        } else {
+            return misc.getValue();
         }
-        if (entity instanceof HostileEntity && hostiles.value) {
-            return true;
-        }
-        if (!(entity instanceof PlayerEntity) && !(entity instanceof HostileEntity) && misc.value) {
-            return true;
-        }
-        return false;
     }
 
-    private boolean isHoldingSword() {
-        assert client.player != null;
-        return client.player.getMainHandStack().isOf(Items.WOODEN_SWORD)
-                || client.player.getMainHandStack().isOf(Items.STONE_SWORD)
-                || client.player.getMainHandStack().isOf(Items.IRON_SWORD)
-                || client.player.getMainHandStack().isOf(Items.DIAMOND_SWORD)
-                || client.player.getMainHandStack().isOf(Items.NETHERITE_SWORD);
+    private boolean isWeapon() {
+        if (client.player == null) {
+            return false;
+        }
+
+        return client.player.getMainHandStack().isOf(Items.WOODEN_SWORD) ||
+                client.player.getMainHandStack().isOf(Items.STONE_SWORD) ||
+                client.player.getMainHandStack().isOf(Items.IRON_SWORD) ||
+                client.player.getMainHandStack().isOf(Items.DIAMOND_SWORD) ||
+                client.player.getMainHandStack().isOf(Items.NETHERITE_SWORD);
     }
 }

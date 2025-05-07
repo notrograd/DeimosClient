@@ -1,4 +1,4 @@
-package net.deimos.api.util;
+package net.deimos.api.anticheat;
 
 import net.deimos.api.event.Event;
 import net.minecraft.network.packet.Packet;

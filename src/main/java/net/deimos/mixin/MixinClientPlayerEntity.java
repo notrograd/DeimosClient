@@ -1,9 +1,8 @@
 package net.deimos.mixin;
 
-import net.deimos.Deimos;
-import net.deimos.api.EventManager;
+import net.deimos.api.event.EventManager;
 import net.deimos.api.event.impl.MovementEvent;
-import net.deimos.api.mods.ModuleManager;
+import net.deimos.mods.ModuleManager;
 import net.minecraft.client.network.ClientPlayerEntity;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
@@ -28,7 +27,7 @@ public class MixinClientPlayerEntity {
                     target = "Lnet/minecraft/client/network/ClientPlayerEntity;isUsingItem()Z"),
             require = 0)
     private boolean tickMovement(ClientPlayerEntity player) {
-        if (Deimos.MOD_MANAGER.enabled("NoSlow")) {
+        if (ModuleManager.NO_SLOW.getEnabled()) {
             return false;
         }
         return player.isUsingItem();

@@ -1,6 +1,6 @@
 package net.deimos.mixin;
 
-import net.deimos.api.EventManager;
+import net.deimos.api.event.EventManager;
 import net.deimos.api.event.impl.StrafeEvent;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.math.Vec3d;

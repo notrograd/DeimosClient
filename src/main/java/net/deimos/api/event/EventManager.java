@@ -1,10 +1,8 @@
-package net.deimos.api;
+package net.deimos.api.event;
 
-import net.deimos.api.event.Event;
-import net.deimos.api.event.EventListener;
 import net.deimos.api.mods.ModuleBuilder;
-import net.deimos.api.i.EventHandler;
-import net.deimos.api.i.IClient;
+import net.deimos.api.interfaces.EventHandler;
+import net.deimos.api.interfaces.IClient;
 
 import java.lang.reflect.Method;
 import java.util.ArrayList;

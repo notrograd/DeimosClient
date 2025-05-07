@@ -1,8 +1,8 @@
 package net.deimos.api.gui.settings;
 
 import net.deimos.api.settings.Setting;
-import net.deimos.api.i.IClient;
-import net.deimos.api.i.IVisible;
+import net.deimos.api.interfaces.IClient;
+import net.deimos.api.interfaces.IVisible;
 import net.minecraft.client.gui.DrawContext;
 
 import java.awt.*;

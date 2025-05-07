@@ -1,11 +1,11 @@
 package net.deimos;
 
-import net.deimos.api.EventManager;
+import net.deimos.api.event.EventManager;
 import net.deimos.api.event.impl.RenderEvent;
 import net.deimos.api.event.impl.TickEvent;
 import net.deimos.api.gui.ClickGui;
-import net.deimos.api.mods.ModuleManager;
-import net.deimos.api.i.EventHandler;
+import net.deimos.mods.ModuleManager;
+import net.deimos.api.interfaces.EventHandler;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.fabricmc.fabric.api.client.keybinding.v1.KeyBindingHelper;
@@ -17,7 +17,7 @@ import org.lwjgl.glfw.GLFW;
 
 public class Deimos implements ModInitializer {
 
-    public ClickGui clickGUI;
+    public static ClickGui clickGUI;
     private KeyBinding clickGuiKey;
     public static MinecraftClient mc = MinecraftClient.getInstance();
     public static ModuleManager MOD_MANAGER = new ModuleManager();

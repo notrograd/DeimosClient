@@ -1,11 +1,11 @@
 package net.deimos.api.rotations;
 
-import net.deimos.api.EventManager;
+import net.deimos.api.event.EventManager;
 import net.deimos.api.event.impl.MovementEvent;
 import net.deimos.api.event.impl.StrafeEvent;
-import net.deimos.api.util.NoCheatPlus;
-import net.deimos.api.i.EventHandler;
-import net.deimos.api.i.IClient;
+import net.deimos.api.anticheat.NoCheatPlus;
+import net.deimos.api.interfaces.EventHandler;
+import net.deimos.api.interfaces.IClient;
 import net.deimos.mixin.accessor.AccessorPlayerMoveC2SPacket;
 import net.minecraft.network.packet.c2s.play.PlayerMoveC2SPacket;
 import net.minecraft.util.math.MathHelper;

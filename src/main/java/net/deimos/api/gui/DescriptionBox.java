@@ -1,6 +1,6 @@
 package net.deimos.api.gui;
 
-import net.deimos.api.i.IClient;
+import net.deimos.api.interfaces.IClient;
 import net.minecraft.client.gui.DrawContext;
 
 import java.awt.Color;
@@ -43,7 +43,8 @@ public class DescriptionBox implements IClient {
         context.fill(x + width - 1, y, x + width, y + height, BORDER_COLOR.getRGB());
 
         for (int i = 0; i < lines.length; i++) {
-            context.drawText(client.textRenderer, lines[i], x + PADDING, y + PADDING + i * 10, Color.WHITE.getRGB(), true);
+          context.drawText(client.textRenderer, lines[i], x + PADDING, y + PADDING + i * 10, Color.WHITE.getRGB(), true);
+//           FontAgent.osans.drawText(context.getMatrices(), Text.of(lines[i]), x + PADDING, y + PADDING + i * 10, 255f);
         }
     }
 

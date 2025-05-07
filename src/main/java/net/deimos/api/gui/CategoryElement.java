@@ -1,7 +1,7 @@
 package net.deimos.api.gui;
 
 import net.deimos.api.mods.ModuleBuilder;
-import net.deimos.api.i.IClient;
+import net.deimos.api.interfaces.IClient;
 import net.deimos.api.mods.Category;
 import net.minecraft.client.gui.DrawContext;
 
@@ -34,7 +34,6 @@ public class CategoryElement implements IClient {
 
         context.fill(x, y, x + width, y + 16,  new Color(232, 12, 12, 240).getRGB());
         context.drawText(client.textRenderer, category.name(), x + 5, y + 5, Color.WHITE.getRGB(), true);
-
         int currentY = y + 16;
         mheight += 16;
 

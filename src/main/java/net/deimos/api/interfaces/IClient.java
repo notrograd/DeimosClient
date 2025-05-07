@@ -1,4 +1,4 @@
-package net.deimos.api.i;
+package net.deimos.api.interfaces;
 
 import net.minecraft.client.MinecraftClient;
 

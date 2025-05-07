@@ -1,9 +1,9 @@
 package net.deimos.api.mods;
 
-import net.deimos.api.EventManager;
+import net.deimos.api.event.EventManager;
 import net.deimos.api.rotations.RotationManager;
 import net.deimos.api.settings.Setting;
-import net.deimos.api.i.Module;
+import net.deimos.api.interfaces.Module;
 import net.minecraft.client.MinecraftClient;
 
 import java.util.ArrayList;

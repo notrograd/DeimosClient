@@ -2,7 +2,7 @@ package net.deimos.mixin;
 
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelHandlerContext;
-import net.deimos.api.EventManager;
+import net.deimos.api.event.EventManager;
 import net.deimos.api.event.impl.PacketEvent;
 import net.minecraft.network.ClientConnection;
 import net.minecraft.network.NetworkSide;

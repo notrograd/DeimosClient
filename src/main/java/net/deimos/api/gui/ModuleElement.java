@@ -4,7 +4,7 @@ import net.deimos.api.gui.settings.BoolSetting;
 import net.deimos.api.gui.settings.SliderSetting;
 import net.deimos.api.mods.ModuleBuilder;
 import net.deimos.api.settings.Setting;
-import net.deimos.api.i.IClient;
+import net.deimos.api.interfaces.IClient;
 import net.minecraft.client.gui.DrawContext;
 import org.lwjgl.glfw.GLFW;
 
@@ -48,6 +48,7 @@ public class ModuleElement implements IClient {
         }
 
         context.drawText(client.textRenderer, module.getName(), x + 5, y + 2, Color.WHITE.getRGB(), true);
+
         context.drawText(client.textRenderer, (expanded ? " -" : " +"), x + (wid - 13), y + 2, Color.WHITE.getRGB(), true);
 
         if (expanded) {

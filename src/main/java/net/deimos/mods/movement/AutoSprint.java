@@ -2,8 +2,8 @@ package net.deimos.mods.movement;
 
 import net.deimos.api.event.impl.TickEvent;
 import net.deimos.api.mods.ModuleBuilder;
-import net.deimos.api.i.EventHandler;
-import net.deimos.api.i.Module;
+import net.deimos.api.interfaces.EventHandler;
+import net.deimos.api.interfaces.Module;
 import net.deimos.api.mods.Category;
 
 @Module(name="AutoSprint",

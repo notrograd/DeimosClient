@@ -1,4 +1,4 @@
-package net.deimos.api;
+package net.deimos.api.util;
 
 public class MouseUtil {
     public static boolean bounding(float mouseX, float mouseY, float x, float y, float width, float height) {

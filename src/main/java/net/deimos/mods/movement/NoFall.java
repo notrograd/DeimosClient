@@ -2,8 +2,8 @@ package net.deimos.mods.movement;
 
 import net.deimos.api.event.impl.PacketEvent;
 import net.deimos.api.mods.ModuleBuilder;
-import net.deimos.api.i.EventHandler;
-import net.deimos.api.i.Module;
+import net.deimos.api.interfaces.EventHandler;
+import net.deimos.api.interfaces.Module;
 import net.deimos.mixin.accessor.AccessorPlayerMoveC2SPacket;
 import net.deimos.api.mods.Category;
 import net.minecraft.network.packet.c2s.play.PlayerMoveC2SPacket;

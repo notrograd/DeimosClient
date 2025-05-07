@@ -11,7 +11,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 public class MixinChat {
     @Inject(method = "sendChatMessage", at = @At("HEAD"), cancellable = true)
     private void onSendChatMessage(String message, CallbackInfo ci) {
-        if (message.startsWith("@") && message.length() > 1) {
+        if (message.startsWith("~") && message.length() > 1) {
             String[] parts = message.substring(1).split(" ");
             String commandName = parts[0];
 

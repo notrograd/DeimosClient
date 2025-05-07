@@ -1,8 +1,8 @@
-package net.deimos.api;
+package net.deimos.api.util;
 
 import com.mojang.blaze3d.platform.GlStateManager;
 import com.mojang.blaze3d.systems.RenderSystem;
-import net.deimos.api.i.IClient;
+import net.deimos.api.interfaces.IClient;
 import net.minecraft.client.render.*;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.util.math.*;

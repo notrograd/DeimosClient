@@ -1,5 +1,8 @@
 package net.deimos.api.cmd;
 
+import net.deimos.Deimos;
+import net.deimos.api.interfaces.IClient;
+import net.deimos.mods.ModuleManager;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.text.Text;
 import net.minecraft.text.MutableText;
@@ -7,7 +10,7 @@ import net.minecraft.util.Formatting;
 import java.util.HashMap;
 import java.util.Map;
 
-public class CommandRegistry {
+public class CommandRegistry implements IClient {
     private static final Map<String, CommandExecutor> commands = new HashMap<>();
 
     public static MutableText getPrefix() {
@@ -22,7 +25,6 @@ public class CommandRegistry {
 
     static {
         registerCommand("help", (args) -> {
-            MinecraftClient client = MinecraftClient.getInstance();
             client.inGameHud.getChatHud().addMessage(getPrefix().append("Available commands:"));
             commands.keySet().forEach(cmd ->
                     client.inGameHud.getChatHud().addMessage(Text.of(" " + cmd))
@@ -30,8 +32,17 @@ public class CommandRegistry {
         });
 
         registerCommand("example", (args) -> {
-            MinecraftClient client = MinecraftClient.getInstance();
             client.inGameHud.getChatHud().addMessage(getPrefix().append("Example command executed!"));
+        });
+
+        registerCommand("gui", (args) ->
+        {
+            client.setScreen(Deimos.clickGUI);
+        });
+
+        registerCommand("module", (args) ->
+        {
+            Deimos.MOD_MANAGER.toggle(args[0]);
         });
     }
 

@@ -1,6 +1,6 @@
 package net.deimos.api.util;
 
-import net.deimos.api.i.IClient;
+import net.deimos.api.interfaces.IClient;
 import net.minecraft.util.math.Vec3d;
 
 public class MovementUtil implements IClient {
@@ -51,6 +51,19 @@ public class MovementUtil implements IClient {
         client.player.velocityModified = true;
     }
 
+    public static void moveVertical(float speed) {
+        if (client.player == null) return;
+        Vec3d velocity = client.player.getVelocity();
+        client.player.setVelocity(velocity.x, speed, velocity.z);
+        client.player.velocityModified = true;
+    }
+
+    public static void setPlayerPos(double x,double y,double z) {
+        if (client.player == null) return;
+        client.player.setPos(x,y,z);
+    }
+
+
     public static Vec3d getForwardVector(float speed) {
         double yaw = Math.toRadians(client.player.getYaw());
         double x = -Math.sin(yaw) * speed;
@@ -80,6 +93,7 @@ public class MovementUtil implements IClient {
     public static boolean forwardPressed() {
         return client.options.forwardKey.isPressed();
     }
+
 
     public static boolean backPressed() {
         return client.options.backKey.isPressed();
