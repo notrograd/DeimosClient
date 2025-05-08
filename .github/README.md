@@ -1,4 +1,4 @@
-<img src="jpg" style="margin: auto; height: 100px; width:100px;"/>
+<img src="deimos.jpg" style="margin: auto; height: 100px; width:100px;"/>
 
 # DeimosClient
 A well structured, 1.21.1 Minecraft utility client/cheat. <br> Free to use, distribute, and modify under the BSD-2 Clause. 
