@@ -2,10 +2,7 @@ package net.deimos.mods;
 
 import net.deimos.api.interfaces.Module;
 import net.deimos.api.mods.ModuleBuilder;
-import net.deimos.mods.movement.AutoSprint;
-import net.deimos.mods.movement.Flight;
-import net.deimos.mods.movement.NoSlow;
-import net.deimos.mods.movement.Speed;
+import net.deimos.mods.movement.*;
 import net.deimos.mods.pvp.KillAura;
 import net.deimos.mods.render.HUD;
 import net.deimos.mods.render.HoleESP;
@@ -46,9 +43,8 @@ public class ModuleManager {
 //        return false;
 //    }
 
-    // static modules, for mixin access because fucking enabled() doesnt wanna work
     public static NoSlow NO_SLOW = new NoSlow();
-
+    public static Step STEP = new Step();
     public void init()
     {
         // !!!add all modules here!!!
@@ -60,5 +56,6 @@ public class ModuleManager {
         this.register(new Flight());
         // mixin mods
         this.register(NO_SLOW);
+        this.register(STEP);
     }
 }

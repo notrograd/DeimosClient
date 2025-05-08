@@ -4,6 +4,7 @@ import net.deimos.api.event.EventManager;
 import net.deimos.api.event.impl.RenderEvent;
 import net.deimos.api.event.impl.TickEvent;
 import net.deimos.api.gui.ClickGui;
+import net.deimos.api.rotations.RotationManager;
 import net.deimos.mods.ModuleManager;
 import net.deimos.api.interfaces.EventHandler;
 import net.fabricmc.api.ModInitializer;
@@ -17,6 +18,7 @@ import org.lwjgl.glfw.GLFW;
 
 public class Deimos implements ModInitializer {
 
+    private static final RotationManager ROTS = new RotationManager();
     public static ClickGui clickGUI;
     private KeyBinding clickGuiKey;
     public static MinecraftClient mc = MinecraftClient.getInstance();
@@ -50,6 +52,9 @@ public class Deimos implements ModInitializer {
         }
     }
 
+    public static RotationManager getRotationManager(){
+        return ROTS;
+    }
 
     // $TickEvent.Post
     public void tickchannel0(MinecraftClient client)

@@ -2,10 +2,11 @@
   "schemaVersion": 1,
   "id": "deimos",
   "version": "${version}",
-  "name": "deimosclient",
-  "description": "Halal Minecraft Client.",
+  "name": "DeimosClient",
+  "description": "Minecraft Utility Mod.",
   "authors": ["notrograd"],
   "contact": {},
+  "icon": "deimos.png",
   "license": "All-Rights-Reserved",
   "environment": "client",
   "entrypoints": {

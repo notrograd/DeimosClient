@@ -1,13 +1,16 @@
 package net.deimos.mods.pvp;
 
+import net.deimos.Deimos;
 import net.deimos.api.event.EventManager;
 import net.deimos.api.event.impl.TickEvent;
 import net.deimos.api.gui.settings.BoolSetting;
+import net.deimos.api.gui.settings.ModeSetting;
 import net.deimos.api.gui.settings.SliderSetting;
 import net.deimos.api.mods.ModuleBuilder;
 import net.deimos.api.interfaces.EventHandler;
 import net.deimos.api.interfaces.Module;
 import net.deimos.api.mods.Category;
+import net.deimos.api.rotations.RotationUtil;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.mob.HostileEntity;
@@ -22,6 +25,10 @@ import net.minecraft.util.Hand;
 )
 public class KillAura extends ModuleBuilder {
 
+    private enum RotationType
+    {
+        Grim, NCP
+    }
     BoolSetting weaponOnly = new BoolSetting.Builder()
             .setName("Weapon Only")
             .setDescription("Only attack when player is holding a weapon")
@@ -54,14 +61,21 @@ public class KillAura extends ModuleBuilder {
             .setDefaultValue(true)
             .setDescription("")
             .build();
-    BoolSetting grim = new BoolSetting.Builder()
-            .setName("Grim")
-            .setDefaultValue(false)
-            .setDescription("grim anticheat")
+    ModeSetting<RotationType> rotations = new ModeSetting.Builder<RotationType>()
+            .setName("Rotations")
+            .setDefaultValue(RotationType.NCP)
+            .setDescription("Rotation Type")
+            .build();
+    SliderSetting delay = new SliderSetting.Builder()
+            .setName("Delay")
+            .setDescription("MS")
+            .setDefaultValue(34)
+            .setMax(100)
+            .setMin(0)
             .build();
 
     private int tickCounter = 0;
-    private static final int ATTACK_DELAY = 25;
+    private final int ATTACK_DELAY = delay.getValue();
 
     public KillAura() {
         addSetting(weaponOnly);
@@ -70,7 +84,8 @@ public class KillAura extends ModuleBuilder {
         addSetting(hostiles);
         addSetting(misc);
         addSetting(rotate);
-        addSetting(grim);
+        addSetting(rotations);
+        addSetting(delay);
 
         EventManager.register(this);
     }
@@ -86,7 +101,7 @@ public class KillAura extends ModuleBuilder {
         }
 
         tickCounter++;
-        if (tickCounter < ATTACK_DELAY) {
+        if (tickCounter < this.ATTACK_DELAY) {
             return;
         }
         tickCounter = 0;
@@ -104,10 +119,10 @@ public class KillAura extends ModuleBuilder {
     }
 
     private void rotateToTarget(Entity target) {
-        if (grim.getValue()) {
-            RotationManager.grim(target.getPos());
+        if (rotations.getMode() == RotationType.Grim) {
+            Deimos.getRotationManager().rotate(target.getPos());
         } else {
-            RotationManager.ncp(target.getPos());
+            RotationUtil.rotateInstant(target.getPos());
         }
     }
 
@@ -129,11 +144,9 @@ public class KillAura extends ModuleBuilder {
         double closestDistance = radius.getValue();
 
         for (Entity entity : client.world.getEntities()) {
-            if (!(entity instanceof LivingEntity) || entity == client.player) {
+            if (!(entity instanceof LivingEntity livingEntity) || entity == client.player) {
                 continue;
             }
-
-            LivingEntity livingEntity = (LivingEntity) entity;
 
             if (!isValidTarget(livingEntity)) {
                 continue;

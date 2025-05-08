@@ -4,10 +4,13 @@ import net.deimos.api.event.EventManager;
 import net.deimos.api.rotations.RotationManager;
 import net.deimos.api.settings.Setting;
 import net.deimos.api.interfaces.Module;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.minecraft.client.MinecraftClient;
 
 import java.util.ArrayList;
 
+@Environment(EnvType.CLIENT)
 public abstract class ModuleBuilder {
     public RotationManager RotationManager = new RotationManager();
     public boolean enabled = false;

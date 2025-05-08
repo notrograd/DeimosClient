@@ -1,83 +1,84 @@
 package net.deimos.api.rotations;
 
-import net.deimos.api.event.EventManager;
 import net.deimos.api.event.impl.MovementEvent;
 import net.deimos.api.event.impl.StrafeEvent;
-import net.deimos.api.anticheat.NoCheatPlus;
 import net.deimos.api.interfaces.EventHandler;
 import net.deimos.api.interfaces.IClient;
-import net.deimos.mixin.accessor.AccessorPlayerMoveC2SPacket;
-import net.minecraft.network.packet.c2s.play.PlayerMoveC2SPacket;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 
 /**
- * CREDITS: github.com/misten1
+ * --CLASS PORTED FROM OMNIHACK/OMNI CLIENT--
+ * Credit to github.com/misten1
+ * ------------------------------------------
  */
+// Simple rotation manager
 public class RotationManager implements IClient {
+
+    // null = vanilla rotation takes over
     Rotation target_rotation = null;
-    float prevYaw,prevPitch;
-    boolean shouldRotate = true;
+    float prevPitch, prevYaw;
 
-    public void ncp(Vec3d point)
-    {
-        RotationUtil.rotateInstant(point);
+    // todo can be improved™
+    public void rotate(Vec3d point) {
+        target_rotation = new Rotation(point);
     }
 
-    // make the rotation work
-    @EventHandler
-    public void ncpstrict(NoCheatPlus.StrictRotation event){
-
-        // not exactly sure this works
-        if (event.getPacket() instanceof PlayerMoveC2SPacket.LookAndOnGround p_)
-        {
-            ((AccessorPlayerMoveC2SPacket) p_).setYaw(event.yaw);
-            ((AccessorPlayerMoveC2SPacket) p_).setPitch(event.pitch);
-        }
-    }
-
-    public void grim(Vec3d point) {
-        if (this.target_rotation == null)
-            this.target_rotation = new Rotation(point);
-    }
+    // Set rotations
     @EventHandler
     public void preSync(MovementEvent.Pre event) {
-        if (client.player == null) return;
+        if (mc.player == null) return;
 
-        prevPitch = client.player.getPitch();
-        prevYaw = client.player.getYaw();
+        prevPitch = mc.player.getPitch();
+        prevYaw = mc.player.getYaw();
 
         if (target_rotation == null) return;
-        client.player.setYaw(target_rotation.yaw);
-        client.player.setPitch(target_rotation.pitch);
+        mc.player.setYaw(target_rotation.yaw);
+        mc.player.setPitch(target_rotation.pitch);
 
-        // has rotated
+        // Rotated
         target_rotation = null;
     }
 
+    // Set variables back
     @EventHandler
     public void postSync(MovementEvent.Post event) {
-        if (client.player == null) return;
-        client.player.setYaw(prevYaw);
-        client.player.setPitch(prevPitch);
+        if (mc.player == null) return;
+        mc.player.setYaw(prevYaw);
+        mc.player.setPitch(prevPitch);
     }
 
-    public void reset()
-    {
-        this.target_rotation = null;
-    }
 
+    // 1njects code
+    // might become a module
+//    @EventHandler
+//    public void Bussin(MovementEvent.Post event) {
+//        if (mc.player == null) return;
+//        if (mc.player.isSprinting()) {
+//            mc.player.setYaw(-90);
+//            mc.player.setPitch(90);
+//        }
+//        if (mc.player.isHoldingOntoLadder()) {
+//            mc.player.setYaw(-50);
+//            mc.player.setPitch(50);
+//        }
+//    }
+
+    // The strafe fix
+    // Grim has many other strafe things but this is the most important one
     @EventHandler
     public void onStrafe(StrafeEvent event) {
-        if (target_rotation == null || client.player.isRiding())
+        if (target_rotation == null || mc.player.isRiding())
             return;
 
         event.getCallback().cancel();
-        client.player.setVelocity(client.player.getVelocity().add(
+        mc.player.setVelocity(mc.player.getVelocity().add(
                 fix(target_rotation.yaw, event.getMovementInput(), event.getSpeed())
         ));
     }
 
+    // the magic function
+    // todo keyboard helpers to make it seem less invasive and more easy to use
     public static Vec3d fix(float yaw, Vec3d movementInput, float speed) {
         double d = movementInput.lengthSquared();
         if (d < 1.0E-7)
@@ -96,15 +97,9 @@ public class RotationManager implements IClient {
 
         public Rotation(Vec3d point) {
             this.point = point;
-            assert client.player != null;
-            float[] rots = RotationUtil.calculateRotations(client.player.getEyePos(), point);
+            float[] rots = RotationUtil.calculateRotations(mc.player.getEyePos(), point);
             this.yaw = rots[0];
             this.pitch = rots[1];
         }
-    }
-
-    /*--*/
-    {
-        EventManager.register(this);
     }
 }

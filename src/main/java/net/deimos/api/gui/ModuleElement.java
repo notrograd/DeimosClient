@@ -1,10 +1,12 @@
 package net.deimos.api.gui;
 
 import net.deimos.api.gui.settings.BoolSetting;
+import net.deimos.api.gui.settings.ModeSetting;
 import net.deimos.api.gui.settings.SliderSetting;
 import net.deimos.api.mods.ModuleBuilder;
 import net.deimos.api.settings.Setting;
 import net.deimos.api.interfaces.IClient;
+import net.deimos.api.util.MouseUtil;
 import net.minecraft.client.gui.DrawContext;
 import org.lwjgl.glfw.GLFW;
 
@@ -72,6 +74,8 @@ public class ModuleElement implements IClient {
                 s.render(context, mx, my, x, settingY, wid, 12);
             }
 
+            if (setting instanceof ModeSetting<?> s)
+                s.render(context,mx,my,x,settingY,wid,12);
             settingY += 12;
         }
     }
@@ -92,7 +96,6 @@ public class ModuleElement implements IClient {
     }
 
     public boolean hovered(int x, int y, int wid, int hei, float mx, float my) {
-
         return mx >= x && mx <= x + wid && my >= y && my <= y + hei;
     }
 
